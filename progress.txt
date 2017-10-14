@@ -1,0 +1,21 @@
+
+bncsutil specific:
+sudo apt-get install libgmp3-dev
+bncsutil/src/bncsutil/
+make
+make install
+Lots of warnings, but works.
+
+stormlib specific:
+Changed wave.cpp's 0xFFFFFFFF to -1, since it caused new convention errors.
+sudo apt-get install libbz2-dev
+Stormlib/stormlib/
+make
+make install
+
+
+
+
+
+
+
