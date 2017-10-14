@@ -6,8 +6,8 @@ Overview:
 2. Configuring mysql/mariadb database
 3. Create a folder with the executable and directories
 4. Configuring ghost.cfg and default.cfg
-5. Give an example of the cronscrip
-6. Port forwarding
+5. Port forwarding
+6. Cronscript example
 
 Installation:
 bncsutil specific:
@@ -60,4 +60,5 @@ I may create a cp command.
 
 You can test if the bot can login to battle.net. For others to join the game port forwarding needs to be configured.
 
+Cronscript example to be added.
 
