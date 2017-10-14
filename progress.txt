@@ -36,12 +36,12 @@ create a folder, ex
 	maps/
 		echoisles.w3x
 	mapcfgs/
-		blizzard.j
+		blizzard.j (Can both be extracted from war3x.mpq)
 		common.j
 		echoisles.cfg
 	replays/
 	savedgames/
-	war3.exe
+	war3.exe (rename the Warcraft III.exe to war3.exe)
 	Storm.dll
 	game.dll
 	ghost++ executable that was compiled in ent-ghost folder.
