@@ -6,8 +6,8 @@ Overview:
 2. Configuring mysql/mariadb database
 3. Create a folder with the executable and directories
 4. Configuring ghost.cfg and default.cfg
-5. Port forwarding
-6. Cronscript example
+5. Test the bot
+6. Cronscript example (to be done)
 
 Installation:
 bncsutil specific:
