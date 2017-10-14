@@ -1,3 +1,4 @@
+To be added to the readme.md
 
 bncsutil specific:
 sudo apt-get install libgmp3-dev
@@ -13,9 +14,41 @@ Stormlib/stormlib/
 make
 make install
 
+ent-ghost:
+apt-get install libboost-all-dev
+apt-get install libgeoip-dev
+sudo apt-get install default-libmysqlclient-dev
+make
 
 
+fix mysql/mariadb to have:
+	a database
+	a user, with grant all privileges on the database
+	get the portnumber by: show variables like "%port%";
 
+configure ghost.cfg and default.cfg
+ghost.cfg has higher priority, and therefore settings made in ghost.cfg doesn't need to be set in default.cfg.
 
+Works on raspberry pi 3 B+
+
+create a folder, ex 
+~/ghost++/
+	maps/
+		echoisles.w3x
+	mapcfgs/
+		blizzard.j
+		common.j
+		echoisles.cfg
+	replays/
+	savedgames/
+	war3.exe
+	Storm.dll
+	game.dll
+	ghost++ executable that was compiled in ent-ghost folder.
+	some more things..
+
+I will create a cp command.
+
+You can test if the bot can login to battle.net. For others to join the game port forwarding needs to be configured.
 
 
