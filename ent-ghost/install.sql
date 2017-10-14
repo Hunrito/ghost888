@@ -43,7 +43,7 @@ CREATE TABLE `bans` (
   `reason` varchar(255) NOT NULL,
   `context` varchar(15) DEFAULT NULL,
   `expiredate` TIMESTAMP DEFAULT 0,
-  `warn` int(11) NOT NULL,
+  `warn` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `name` (`name`),
   KEY `date` (`date`)
