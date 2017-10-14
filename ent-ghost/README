@@ -1,0 +1,75 @@
+This is ent-ghost. It is licensed under the GNU GPL v3.
+
+"""
+This was my terminal history regarding ent-ghost. I will try and reproduce the installation to acertain what was necessary and what was superfluous.
+
+my "todo"'s ;D
+
+describe how to connect via ssh, or just use a screen.
+"""
+
+1. Download the latest official GHost++ files at https://code.google.com/archive/p/ghostplusplus/downloads.
+2. Replace the ghost/ source directory in GHost++ with this (ent-ghost) repository, or just move ent-ghost there. No need for replace.
+3. Compile bncsutil/src/bncsutil/ and Stormlib/stormlib/ by running make and then make install.
+
+"""
+Dependencies:
+sudo apt-get install libboost-all-dev
+
+bncsutil specific:
+sudo apt-get install libgmp3-dev
+
+stormlib specific:
+sudo apt-get install libbz2-dev
+
+ent-ghost specific:
+sudo apt-get install libmysqlclient-dev
+sudo apt-get install libboost-dev
+sudo apt-get install libboost-system-dev
+Some library was renamed.
+g++ -o ./ghost++ bncsutilinterface.o bnet.o bnetprotocol.o bnlsclient.o bnlsprotocol.o commandpacket.o config.o crc32.o csvparser.o game.o game_admin.o game_base.o gameplayer.o gameprotocol.o gameslot.o ghost.o ghostdb.o ghostdbmysql.o ghostdbsqlite.o gpsprotocol.o language.o map.o packed.o replay.o savegame.o sha1.o socket.o stats.o statsdota.o statsw3mmd.o util.o sqlite3.o -L. -L../bncsutil/src/bncsutil/ -L../StormLib/stormlib/ -lbncsutil -lpthread -ldl -lz -lStorm -lmysqlclient_r -lboost_date_time -lboost_thread -lboost_system -lboost_filesystem -lrt
+
+sudo apt-get install libgeoip-dev
+sudo apt-get install mysql-server mysql-client
+
+If you encounter "make" issues, make an issue on the repo. Perhaphs it may get solved.
+"""
+
+4. Copy the "ghost++" executable to the base of the GHost++ download
+
+5. Follow the GHost++ installation instructions to configure in default.cfg and ghost.cfg.
+"""
+provide examples
+
+show how to extract the wc3 .j files, or try fixing their code to use the new container. Atm their exctraction tries to extract from an old file.
+I extracted them on my windows machine, with some hiveworkshop tool.
+Think their correct mpq file was war3x.mpq, and inside scripts.
+"""
+
+6. Setup your database using the included install.sql from this repository (do not use GHost++ database schema files).
+"""
+Ent-ghost doesn't start if it cannot establish a connection to the mysql server, what I remember.
+Do something with my.cnf
+sudo vi my.cnf
+
+mysql -u root -p ghostdb < install.sql 
+
+one table in install.sql had no default value on "warn".
+
+use ghostdb;
+alter table bans alter warn set default 0;
+describe bans;
+
+Create a user named ghost, and grant all privileges on ghostdb to it.
+"""
+
+7. It is highly recommended to additionally setup a cron script based around the included cron_functions.php. This will ensure update of the bans and gametrack tables.
+
+"""
+crontab -e
+
+Add the following to the end, to run the script every 10 minutes. testcron.php is included in the repo.
+example:
+*/10 * * * * php /usr/src/ghost/ent-ghost/testcron.php
+
+"""
