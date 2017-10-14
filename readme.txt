@@ -11,14 +11,14 @@ Overview:
 
 Installation:
 bncsutil specific:
-sudo apt-get install libgmp3-dev
+apt-get install libgmp3-dev
 bncsutil/src/bncsutil/
 make
 make install
 Lots of warnings, but works.
 
 stormlib specific:
-sudo apt-get install libbz2-dev
+apt-get install libbz2-dev
 Stormlib/stormlib/
 make
 make install
@@ -26,7 +26,8 @@ make install
 ent-ghost:
 apt-get install libboost-all-dev
 apt-get install libgeoip-dev
-sudo apt-get install default-libmysqlclient-dev
+apt-get install mysql-server mysql-client (may be unneeded, the one below installs mariadb and some compilation stuff)
+apt-get install default-libmysqlclient-dev
 ent-ghost/
 make
 
