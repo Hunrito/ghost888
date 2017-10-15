@@ -61,5 +61,10 @@ I may create a cp command.
 
 You can test if the bot can login to battle.net. For others to join the game port forwarding needs to be configured.
 
-Cronscript example to be added.
+Cronscript example:
+crontab -e
+
+Append the following to run the script,testcron.php, every 10 minutes. It updates bans and statistics.
+example:
+*/10 * * * * php ghostspath/ghost/ent-ghost/testcron.php
 
