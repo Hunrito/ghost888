@@ -745,7 +745,8 @@ void CBNET :: ProcessPackets( )
 
 			case CBNETProtocol :: SID_GETADVLISTEX:
 				GameHost = m_Protocol->RECEIVE_SID_GETADVLISTEX( Packet->GetData( ) );
-
+  				CONSOLE_Print("In ProcessPackets : SID_GETADVLISTEX");
+				
 				if( GameHost )
 					CONSOLE_Print( "[BNET: " + m_ServerAlias + "] joining game [" + GameHost->GetGameName( ) + "]" );
 
@@ -1624,6 +1625,18 @@ void CBNET :: BotCommand( string Message, string User, bool Whisper, bool ForceR
 
 			lock.unlock( );
 		}
+
+
+		//
+		// !GETADVLISTEX
+		//
+
+		else if( Command == "getadvlistex") {
+			string pattern = Payload;
+			CONSOLE_Print(pattern);
+			m_OutPackets.push( m_Protocol->SEND_SID_GETADVLISTEX(Payload));
+		}
+		
 
 		//
 		// !HOSTSG

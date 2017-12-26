@@ -55,8 +55,8 @@ bool CBNETProtocol :: RECEIVE_SID_NULL( BYTEARRAY data )
 
 CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data )
 {
-	// DEBUG_Print( "RECEIVED SID_GETADVLISTEX" );
-	// DEBUG_Print( data );
+	DEBUG_Print( "RECEIVED SID_GETADVLISTEX" );
+	DEBUG_Print( data );
 
 	// 2 bytes					-> Header
 	// 2 bytes					-> Length
@@ -72,13 +72,19 @@ CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data )
 	if( ValidateLength( data ) && data.size( ) >= 8 )
 	{
 		BYTEARRAY GamesFound = BYTEARRAY( data.begin( ) + 4, data.begin( ) + 8 );
-
+                DEBUG_Print(GamesFound);
 		if( UTIL_ByteArrayToUInt32( GamesFound, false ) > 0 && data.size( ) >= 25 )
 		{
 			BYTEARRAY Port = BYTEARRAY( data.begin( ) + 18, data.begin( ) + 20 );
 			BYTEARRAY IP = BYTEARRAY( data.begin( ) + 20, data.begin( ) + 24 );
-			BYTEARRAY GameName = UTIL_ExtractCString( data, 24 );
 
+			// AiSt: we got a 0 byte long gamename?
+			BYTEARRAY GameName = UTIL_ExtractCString( data, 24 );
+                        DEBUG_Print(GameName);
+			
+			// AiSt: What's the purpose and what does it do?
+			// Atm it crashes(?) before returning anything.
+			/*
 			if( data.size( ) >= GameName.size( ) + 35 )
 			{
 				BYTEARRAY HostCounter;
@@ -90,8 +96,26 @@ CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data )
 												UTIL_ByteArrayToUInt16( Port, false ),
 												string( GameName.begin( ), GameName.end( ) ),
 												HostCounter );
-			}
+			}*/
+
+
 		}
+
+		//For i in range ListCount: (GamesFound)
+		/*
+			Parse Game:
+			2 B Game nummer: (decimalt i hex?) => max 99 spel? lr 9999
+			2 B Parameter(?)
+			4 B Language ID: Ingame language or actual origin?
+			16 B Ip+port+familj+sinzeros
+			4 B status
+			4 B elapsed time
+			null terminated gamename
+			null game password
+			null terminated game statstring
+		*/
+		// Put interesting parts in a vector<customgame>, and return the vector.
+		// how do i not lose the memory when function is done? malloc?
 	}
 
 	return NULL;
@@ -547,10 +571,20 @@ BYTEARRAY CBNETProtocol :: SEND_SID_STOPADV( )
 
 BYTEARRAY CBNETProtocol :: SEND_SID_GETADVLISTEX( string gameName )
 {
-	unsigned char MapFilter1[]	= { 255, 3, 0, 0 };
-	unsigned char MapFilter2[]	= { 255, 3, 0, 0 };
-	unsigned char MapFilter3[]	= {   0, 0, 0, 0 };
-	unsigned char NumGames[]	= {   1, 0, 0, 0 };
+
+	/*
+	header type BNCS 0xFF
+	packet ID, SID_GETADVLISTEX 0x09
+	Packet length 2 B, always 23 (17 00)
+	game type: 00 e0
+	*/
+
+	unsigned char MapFilter1[]	= { 255, 3, 0, 0 }; // 7F 0 0 0
+	unsigned char MapFilter2[]	= { 255, 3, 0, 0 }; // 0
+	unsigned char MapFilter3[]	= {   0, 0, 0, 0 }; // 0
+	unsigned char NumGames[]	= {   1, 0, 0, 0 }; // 14 0 0 0 (20) I can write a bigger listcount here than the return message can handle? 4 bilj vs 9999 games? Where's the logic blizzard? ;D
+
+	// add 3 null bytes for game name, pass, stats.
 
 	BYTEARRAY packet;
 	packet.push_back( BNET_HEADER_CONSTANT );			// BNET header constant
@@ -565,8 +599,8 @@ BYTEARRAY CBNETProtocol :: SEND_SID_GETADVLISTEX( string gameName )
 	packet.push_back( 0 );								// Game Password is NULL
 	packet.push_back( 0 );								// Game Stats is NULL
 	AssignLength( packet );
-	// DEBUG_Print( "SENT SID_GETADVLISTEX" );
-	// DEBUG_Print( packet );
+	DEBUG_Print( "SENT SID_GETADVLISTEX" );
+	DEBUG_Print( packet );
 	return packet;
 }
 
