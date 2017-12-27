@@ -56,68 +56,56 @@ bool CBNETProtocol :: RECEIVE_SID_NULL( BYTEARRAY data )
 CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data )
 {
 	DEBUG_Print( "RECEIVED SID_GETADVLISTEX" );
-	DEBUG_Print( data );
-
+	
 	// 2 bytes					-> Header
 	// 2 bytes					-> Length
 	// 4 bytes					-> GamesFound
-	// if( GamesFound > 0 )
-	//		10 bytes			-> ???
-	//		2 bytes				-> Port
-	//		4 bytes				-> IP
-	//		null term string	-> GameName
-	//		2 bytes				-> ???
-	//		8 bytes				-> HostCounter
 
-	if( ValidateLength( data ) && data.size( ) >= 8 )
-	{
-		BYTEARRAY GamesFound = BYTEARRAY( data.begin( ) + 4, data.begin( ) + 8 );
-                DEBUG_Print(GamesFound);
-		if( UTIL_ByteArrayToUInt32( GamesFound, false ) > 0 && data.size( ) >= 25 )
-		{
-			BYTEARRAY Port = BYTEARRAY( data.begin( ) + 18, data.begin( ) + 20 );
-			BYTEARRAY IP = BYTEARRAY( data.begin( ) + 20, data.begin( ) + 24 );
+	unsigned int listcount = 0; 
+	for (int n = 0; n < 4; n++){
+		listcount += ((unsigned int) data[4+n]) << (n*8);
+	}
 
-			// AiSt: we got a 0 byte long gamename?
-			BYTEARRAY GameName = UTIL_ExtractCString( data, 24 );
-                        DEBUG_Print(GameName);
-			
-			// AiSt: What's the purpose and what does it do?
-			// Atm it crashes(?) before returning anything.
-			/*
-			if( data.size( ) >= GameName.size( ) + 35 )
-			{
-				BYTEARRAY HostCounter;
-				HostCounter.push_back( UTIL_ExtractHex( data, GameName.size( ) + 27, true ) );
-				HostCounter.push_back( UTIL_ExtractHex( data, GameName.size( ) + 29, true ) );
-				HostCounter.push_back( UTIL_ExtractHex( data, GameName.size( ) + 31, true ) );
-				HostCounter.push_back( UTIL_ExtractHex( data, GameName.size( ) + 33, true ) );
-				return new CIncomingGameHost(	IP,
-												UTIL_ByteArrayToUInt16( Port, false ),
-												string( GameName.begin( ), GameName.end( ) ),
-												HostCounter );
-			}*/
+        int game_i = 8;        
 
+	vector<std::string> gamesfound;
+	for(int n = 0; n < listcount; n++){
+		
+		int name_start = game_i + 32;
 
-		}
-
-		//For i in range ListCount: (GamesFound)
+		int name_end = name_start;
+		while (data[name_end++]);
+		
+		std::string gamename = std::string(reinterpret_cast<const char*>(&data[name_start]));
+		gamesfound.push_back(gamename);
+	        DEBUG_Print(gamename);
+	
+		name_end += 2;
+		int gamestat_stuff = name_end += 2; // jump to start of gamestatstring
+		while(data[gamestat_stuff++]);
+		
+		game_i = gamestat_stuff;
+		
+	}
+        
+	//For i in range ListCount: (GamesFound)
 		/*
 			Parse Game:
-			2 B Game nummer: (decimalt i hex?) => max 99 spel? lr 9999
-			2 B Parameter(?)
-			4 B Language ID: Ingame language or actual origin?
-			16 B Ip+port+familj+sinzeros
+			4 B unknown
+			2 B Game Type
+			2 B Parameter
+			16 B Ip+port+familj+2xsinzeros
 			4 B status
 			4 B elapsed time
 			null terminated gamename
 			null game password
 			null terminated game statstring
 		*/
+
 		// Put interesting parts in a vector<customgame>, and return the vector.
 		// how do i not lose the memory when function is done? malloc?
-	}
 
+	DEBUG_Print("Listcount: " + std::to_string(listcount));
 	return NULL;
 }
 
@@ -579,29 +567,34 @@ BYTEARRAY CBNETProtocol :: SEND_SID_GETADVLISTEX( string gameName )
 	game type: 00 e0
 	*/
 
-	unsigned char MapFilter1[]	= { 255, 3, 0, 0 }; // 7F 0 0 0
-	unsigned char MapFilter2[]	= { 255, 3, 0, 0 }; // 0
-	unsigned char MapFilter3[]	= {   0, 0, 0, 0 }; // 0
-	unsigned char NumGames[]	= {   1, 0, 0, 0 }; // 14 0 0 0 (20) I can write a bigger listcount here than the return message can handle? 4 bilj vs 9999 games? Where's the logic blizzard? ;D
+	unsigned char MapFilter1[]	= { 127, 0}; // 7F
+	unsigned char MapFilter2[]	= {   0, 0, 0, 0 }; //
+	unsigned char MapFilter3[]	= {   0, 0, 0, 0 }; // 
+	unsigned char NumGames[]	= {  20, 0, 0, 0 }; // 0x14 0 0 0  I can write a bigger listcount here than the return message can handle? 4 bilj vs 9999 games? Where's the logic blizzard? ;D
+
+	if (gameName.size() > 0){
+		NumGames[0] = (unsigned char) std::stoi(gameName);
+	}
 
 	// add 3 null bytes for game name, pass, stats.
 
 	BYTEARRAY packet;
 	packet.push_back( BNET_HEADER_CONSTANT );			// BNET header constant
 	packet.push_back( SID_GETADVLISTEX );				// SID_GETADVLISTEX
+	packet.push_back( 0x17 );				      
 	packet.push_back( 0 );								// packet length will be assigned later
-	packet.push_back( 0 );								// packet length will be assigned later
-	UTIL_AppendByteArray( packet, MapFilter1, 4 );		// Map Filter
+	packet.push_back( 0 );						// Game type 00 e0
+	packet.push_back( 0xe0);
+	UTIL_AppendByteArray( packet, MapFilter1, 2 );		// Map Filter
 	UTIL_AppendByteArray( packet, MapFilter2, 4 );		// Map Filter
 	UTIL_AppendByteArray( packet, MapFilter3, 4 );		// Map Filter
 	UTIL_AppendByteArray( packet, NumGames, 4 );		// maximum number of games to list
-	UTIL_AppendByteArrayFast( packet, gameName );		// Game Name
+	packet.push_back( 0 );								// Game Name is NULL
 	packet.push_back( 0 );								// Game Password is NULL
 	packet.push_back( 0 );								// Game Stats is NULL
-	AssignLength( packet );
 	DEBUG_Print( "SENT SID_GETADVLISTEX" );
 	DEBUG_Print( packet );
-	return packet;
+	return packet;  // Will not packet get deallocated?
 }
 
 BYTEARRAY CBNETProtocol :: SEND_SID_ENTERCHAT( )
