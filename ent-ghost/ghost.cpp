@@ -502,7 +502,7 @@ CGHost :: CGHost( CConfig *CFG )
 	m_ReplayBuildNumber = CFG->GetInt( "replay_buildnumber", 6059 );
 	bool IPToCountry = CFG->GetInt( "bot_iptocountry", 0 ) == 0 ? false : true;
 	SetConfigs( CFG );
-
+	
 	// load the battle.net connections
 	// we're just loading the config data and creating the CBNET classes here, the connections are established later (in the Update function)
 
@@ -665,6 +665,13 @@ CGHost :: CGHost( CConfig *CFG )
 	
 	//delete from gamelist if there's any residual entries
 	m_Callables.push_back( m_DB->ThreadedGameUpdate(0, "", "", "", "", 0, "", 0, 0, 0, false) );
+
+	for( vector<CBNET *> :: iterator i = m_BNETs.begin( ); i != m_BNETs.end( ); ++i )
+	{
+		(*i)->InitGetAdvListExTimer();
+	}
+	
+	
 }
 
 CGHost :: ~CGHost( )
@@ -1175,6 +1182,12 @@ bool CGHost :: Update( long usecBlock )
 		lock.unlock( );
 		m_LastDenyCleanTime = GetTime( );
 	}
+
+	for( vector<CBNET *> :: iterator i = m_BNETs.begin( ); i != m_BNETs.end( ); ++i )
+	{
+		(*i)->DoGetAdvListEx();
+	}
+	
 
 	return m_Exiting || AdminExit || BNETExit;
 }

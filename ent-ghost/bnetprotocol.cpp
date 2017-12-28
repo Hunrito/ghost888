@@ -26,6 +26,8 @@
 #include "ghost.h"
 #include "util.h"
 #include "bnetprotocol.h"
+#include <iostream>
+#include <fstream>
 
 CBNETProtocol :: CBNETProtocol( )
 {
@@ -69,6 +71,7 @@ CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data )
         int game_i = 8;        
 
 	vector<std::string> gamesfound;
+	ofstream customgames_file ("customgames_file.txt");
 	for(int n = 0; n < listcount; n++){
 		
 		int name_start = game_i + 32;
@@ -78,8 +81,12 @@ CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data )
 		
 		std::string gamename = std::string(reinterpret_cast<const char*>(&data[name_start]));
 		gamesfound.push_back(gamename);
-	        DEBUG_Print(gamename);
-	
+	        //DEBUG_Print(gamename);
+		
+		if (customgames_file.is_open()){
+			customgames_file << gamename + "\n";
+		}
+
 		name_end += 2;
 		int gamestat_stuff = name_end += 2; // jump to start of gamestatstring
 		while(data[gamestat_stuff++]);
@@ -87,7 +94,13 @@ CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data )
 		game_i = gamestat_stuff;
 		
 	}
-        
+
+	if (customgames_file.is_open()){
+		customgames_file.close();
+        }else{
+		DEBUG_Print("Could not open customgames_file.txt");
+	}
+
 	//For i in range ListCount: (GamesFound)
 		/*
 			Parse Game:

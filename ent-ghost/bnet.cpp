@@ -2495,3 +2495,16 @@ void CBNET :: HoldClan( CBaseGame *game )
 			game->AddToReserved( (*i)->GetName( ) );
 	}
 }
+
+void CBNET :: InitGetAdvListExTimer (){
+	m_LastGetAdvListExTime = GetTime();
+}
+
+void CBNET :: DoGetAdvListEx(){
+	if (GetTime() - m_LastGetAdvListExTime >= 10){
+		m_OutPackets.push( m_Protocol->SEND_SID_GETADVLISTEX("200"));
+		m_LastGetAdvListExTime = GetTime();
+	}
+}
+
+
