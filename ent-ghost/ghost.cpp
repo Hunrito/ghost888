@@ -1182,12 +1182,13 @@ bool CGHost :: Update( long usecBlock )
 		lock.unlock( );
 		m_LastDenyCleanTime = GetTime( );
 	}
-
-	for( vector<CBNET *> :: iterator i = m_BNETs.begin( ); i != m_BNETs.end( ); ++i )
-	{
-		(*i)->DoGetAdvListEx();
-	}
 	
+	if (false){
+		for( vector<CBNET *> :: iterator i = m_BNETs.begin( ); i != m_BNETs.end( ); ++i )
+		{
+			(*i)->DoGetAdvListEx();
+		}	
+	}
 
 	return m_Exiting || AdminExit || BNETExit;
 }
@@ -1317,6 +1318,7 @@ void CGHost :: SetConfigs( CConfig *CFG )
 	m_SaveGamePath = UTIL_AddPathSeperator( CFG->GetString( "bot_savegamepath", string( ) ) );
 	m_MapPath = UTIL_AddPathSeperator( CFG->GetString( "bot_mappath", string( ) ) );
 	m_SaveReplays = CFG->GetInt( "bot_savereplays", 0 ) == 0 ? false : true;
+	m_PrintWaitingMorePlayers = CFG->GetInt( "bot_printwaitingforplayers", 0) == 1;	
 	m_ReplayPath = UTIL_AddPathSeperator( CFG->GetString( "bot_replaypath", string( ) ) );
 	m_VirtualHostName = CFG->GetString( "bot_virtualhostname", "|cFF4080C0GHost" );
 	m_HideIPAddresses = CFG->GetInt( "bot_hideipaddresses", 0 ) == 0 ? false : true;

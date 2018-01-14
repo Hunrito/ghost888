@@ -124,6 +124,7 @@ public:
 	string m_MapPath;						// config value: map path
 	bool m_SaveReplays;						// config value: save replays
 	string m_ReplayPath;					// config value: replay path
+	bool m_PrintWaitingMorePlayers;
 	string m_VirtualHostName;				// config value: virtual host name
 	bool m_HideIPAddresses;					// config value: hide IP addresses from players
 	bool m_CheckMultipleIPUsage;			// config value: check for multiple IP address usage
