@@ -57,7 +57,7 @@ bool CBNETProtocol :: RECEIVE_SID_NULL( BYTEARRAY data )
 
 CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data )
 {
-	DEBUG_Print( "RECEIVED SID_GETADVLISTEX" );
+	//DEBUG_Print( "RECEIVED SID_GETADVLISTEX" );
 	
 	// 2 bytes					-> Header
 	// 2 bytes					-> Length
@@ -118,7 +118,7 @@ CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data )
 		// Put interesting parts in a vector<customgame>, and return the vector.
 		// how do i not lose the memory when function is done? malloc?
 
-	DEBUG_Print("Listcount: " + std::to_string(listcount));
+	//DEBUG_Print("Listcount: " + std::to_string(listcount));
 	return NULL;
 }
 
@@ -605,8 +605,9 @@ BYTEARRAY CBNETProtocol :: SEND_SID_GETADVLISTEX( string gameName )
 	packet.push_back( 0 );								// Game Name is NULL
 	packet.push_back( 0 );								// Game Password is NULL
 	packet.push_back( 0 );								// Game Stats is NULL
-	DEBUG_Print( "SENT SID_GETADVLISTEX" );
-	DEBUG_Print( packet );
+	
+	//DEBUG_Print( "SENT SID_GETADVLISTEX" );
+	//DEBUG_Print( packet );
 	return packet;  // Will not packet get deallocated?
 }
 

@@ -140,6 +140,7 @@ CBNET :: CBNET( CGHost *nGHost, string nServer, string nServerAlias, string nBNL
 	m_LastInviteCreation = false;
 	m_ServerReconnectCount = 0;
 	m_AuthFailCount = 0;
+	m_EnableGetAdvListEx = false;
 }
 
 CBNET :: ~CBNET( )
@@ -745,7 +746,7 @@ void CBNET :: ProcessPackets( )
 
 			case CBNETProtocol :: SID_GETADVLISTEX:
 				GameHost = m_Protocol->RECEIVE_SID_GETADVLISTEX( Packet->GetData( ) );
-  				CONSOLE_Print("In ProcessPackets : SID_GETADVLISTEX");
+  				//CONSOLE_Print("In ProcessPackets : SID_GETADVLISTEX");
 				
 				if( GameHost )
 					CONSOLE_Print( "[BNET: " + m_ServerAlias + "] joining game [" + GameHost->GetGameName( ) + "]" );
@@ -1632,9 +1633,16 @@ void CBNET :: BotCommand( string Message, string User, bool Whisper, bool ForceR
 		//
 
 		else if( Command == "getadvlistex") {
-			string pattern = Payload;
-			CONSOLE_Print(pattern);
-			m_OutPackets.push( m_Protocol->SEND_SID_GETADVLISTEX(Payload));
+			
+			if (Payload == "on"){
+				CONSOLE_Print("GetAdvListEx enabled.");
+				m_EnableGetAdvListEx = true;
+			}else if (Payload == "off"){
+				CONSOLE_Print("GetAdvListEx disabled.");
+				m_EnableGetAdvListEx = false;
+			}else{
+				CONSOLE_Print("on or off payload.");
+			} 
 		}
 		
 
@@ -2501,9 +2509,11 @@ void CBNET :: InitGetAdvListExTimer (){
 }
 
 void CBNET :: DoGetAdvListEx(){
-	if (GetTime() - m_LastGetAdvListExTime >= 10){
-		m_OutPackets.push( m_Protocol->SEND_SID_GETADVLISTEX("200"));
-		m_LastGetAdvListExTime = GetTime();
+	if (m_EnableGetAdvListEx){
+		if (GetTime() - m_LastGetAdvListExTime >= 10){
+			m_OutPackets.push( m_Protocol->SEND_SID_GETADVLISTEX("200"));
+			m_LastGetAdvListExTime = GetTime();
+		}
 	}
 }
 

@@ -1186,6 +1186,7 @@ bool CGHost :: Update( long usecBlock )
 	for( vector<CBNET *> :: iterator i = m_BNETs.begin( ); i != m_BNETs.end( ); ++i )
 	{
 		(*i)->DoGetAdvListEx();
+		break;
 	}
 	
 
