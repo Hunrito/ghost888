@@ -1,0 +1,28 @@
+random fix:
+	closing 1/300 mysql threads at shutdown??
+	the threads never get recovered? what happens when a thread gets stuck?
+
+
+What do the other bots got that this one doesn't?
+	possible to add features to the btanks.net website (show bt1 games)
+
+	stats (creeps, kd)
+
+old qualify and league options:
+	really what did they got that's applicable now
+		not league filtering lol.
+
+
+wishlist:
+	print join/leave statistics.
+		"10 individual players has joined this game the last 10 mins"
+	
+		"game probability?" (requires more than 0 games played lol).
+
+	autosave at drops
+
+	possible to load saved games
+		
+	fromall that doesn't lag. (prioritice threads?)
+
+	
