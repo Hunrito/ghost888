@@ -26,6 +26,7 @@
 #include "ghost.h"
 #include "util.h"
 #include "bnetprotocol.h"
+#include <string>
 #include <iostream>
 #include <fstream>
 
@@ -55,7 +56,7 @@ bool CBNETProtocol :: RECEIVE_SID_NULL( BYTEARRAY data )
 	return ValidateLength( data );
 }
 
-CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data )
+CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data , string serveralias)
 {
 	//DEBUG_Print( "RECEIVED SID_GETADVLISTEX" );
 	
@@ -71,10 +72,24 @@ CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data )
         int game_i = 8;        
 
 	vector<std::string> gamesfound;
-	ofstream customgames_file ("customgames_file.txt");
+	
+	string filename = serveralias + "_customgames.txt";
+	string filename_old = serveralias + "_old_customgames.txt";
+
+
+	ofstream customgames_file (filename);
+	ofstream old_games_file (filename_old);
+
 	for(int n = 0; n < listcount; n++){
 		
 		int name_start = game_i + 32;
+		int time_start = game_i + 28;
+
+		int elapsed_time = 0;
+		for (int n = 0; n < 4; n++){
+			elapsed_time += ((unsigned int) data[time_start+n]) << (n*8);
+		}
+
 
 		int name_end = name_start;
 		while (data[name_end++]);
@@ -83,14 +98,17 @@ CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data )
 		gamesfound.push_back(gamename);
 	        //DEBUG_Print(gamename);
 		
-		if (customgames_file.is_open()){
+		if (customgames_file.is_open() && elapsed_time < 1800){
 			customgames_file << gamename + "\n";
 		}
 
-		name_end += 2;
-		int gamestat_stuff = name_end += 2; // jump to start of gamestatstring
-		while(data[gamestat_stuff++]);
-		
+		if (old_games_file.is_open() && elapsed_time >= 1800){
+			old_games_file << gamename + " : " + std::to_string(elapsed_time) + "\n";
+		}
+
+		int gamestat_stuff = name_end + 2; // jump to start of gamestatstring
+                while(data[gamestat_stuff++]);
+	
 		game_i = gamestat_stuff;
 		
 	}
@@ -100,6 +118,15 @@ CIncomingGameHost *CBNETProtocol :: RECEIVE_SID_GETADVLISTEX( BYTEARRAY data )
         }else{
 		DEBUG_Print("Could not open customgames_file.txt");
 	}
+
+	
+	if (old_games_file.is_open()){
+		old_games_file.close();
+        }else{
+		DEBUG_Print("Could not open old_games_file.txt");
+	}
+
+
 
 	//For i in range ListCount: (GamesFound)
 		/*

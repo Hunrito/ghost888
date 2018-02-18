@@ -142,7 +142,7 @@ public:
 	// receive functions
 
 	bool RECEIVE_SID_NULL( BYTEARRAY data );
-	CIncomingGameHost *RECEIVE_SID_GETADVLISTEX( BYTEARRAY data );
+	CIncomingGameHost *RECEIVE_SID_GETADVLISTEX( BYTEARRAY data, string serveralias);
 	bool RECEIVE_SID_ENTERCHAT( BYTEARRAY data );
 	CIncomingChatEvent *RECEIVE_SID_CHATEVENT( BYTEARRAY data );
 	bool RECEIVE_SID_CHECKAD( BYTEARRAY data );

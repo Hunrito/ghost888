@@ -1980,6 +1980,8 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
 				else
 					SendAllChat( m_GHost->m_Language->UnableToCreateGameInvalidCharacters( Payload ) );
 			}
+
+
 			//
 			// !REFRESH (turn on or off refresh messages)
 			//
@@ -1994,7 +1996,8 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
 				else if( Payload == "off" )
 				{
 					SendAllChat( m_GHost->m_Language->RefreshMessagesDisabled( ) );
-					m_RefreshMessages = false;
+			
+		m_RefreshMessages = false;
 				}
 			}
 

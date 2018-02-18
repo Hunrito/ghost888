@@ -670,6 +670,9 @@ bool CBaseGame :: Update( void *fd, void *send_fd )
 
 			if( (*i)->GetOutPacketsQueued( ) <= 1 )
 			{
+
+				m_GameName = m_GHost->m_AutoHostGameName + " #" + UTIL_ToString( m_GHost->m_HostCounter % 100 ) + " (" + UTIL_ToString(GetNumHumanPlayers()) + "/" + UTIL_ToString(GetNumHumanPlayers() + GetSlotsOpen()) + ")"; 
+
 				(*i)->QueueGameRefresh( m_GameState, m_GameName, string( ), m_Map, m_SaveGame, 1, m_HostCounter );
 				Refreshed = true;
 			}
