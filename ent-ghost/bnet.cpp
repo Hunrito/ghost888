@@ -2339,8 +2339,8 @@ void CBNET :: QueueGameRefresh( unsigned char state, string gameName, string hos
 			MapHeight.push_back( 7 );
 
             //MapGameType = 21569664;
-            MapGameType = m_GHost->m_MapGameType;
-
+            //MapGameType = m_GHost->m_MapGameType;
+			
 			boost::mutex::scoped_lock packetsLock( m_PacketsMutex );
 
 			if( m_GHost->m_Reconnect ) {
