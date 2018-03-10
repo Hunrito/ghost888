@@ -303,7 +303,15 @@ bool CBNETProtocol :: RECEIVE_SID_AUTH_INFO( BYTEARRAY data )
 		m_MPQFileTime = BYTEARRAY( data.begin( ) + 16, data.begin( ) + 24 );
 		m_IX86VerFileName = UTIL_ExtractCString( data, 24 );
 		m_ValueStringFormula = UTIL_ExtractCString( data, m_IX86VerFileName.size( ) + 25 );
-		return true;
+	
+        DEBUG_Print("RECEIVE_SID_AUTH_INFO");
+       
+        //DEbug
+        
+        DEBUG_Print_vec(m_IX86VerFileName);
+        DEBUG_Print( m_ValueStringFormula);        
+
+        return true;
 	}
 
 	return false;

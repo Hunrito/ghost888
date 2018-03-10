@@ -3,26 +3,21 @@ random fix:
 	the threads never get recovered? what happens when a thread gets stuck?
 
 
-What do the other bots got that this one doesn't?
-	possible to add features to the btanks.net website (show bt1 games)
-
-	stats (creeps, kd)
-
-old qualify and league options:
-	really what did they got that's applicable now
-		not league filtering lol.
-
+    läsa rätt revision ur 1.29 Warcraft III.exe
+        Vad gör Storm.dll, war3.exe, game.dll nu? Bara checkrevision??? 
+    
+        Vad säger wireshark på PTR?
+            med wc3
+            med ghost
 
 wishlist:
 	print join/leave statistics.
 		"10 individual players has joined this game the last 10 mins"
 	
-		"game probability?" (requires more than 0 games played lol).
-
-	autosave at drops
+    autosave at drops
 
 	possible to load saved games
 		
 	fromall that doesn't lag. (prioritice threads?)
 
-	
+    	

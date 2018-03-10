@@ -76,5 +76,6 @@ uint32_t GetTicks( );		// milliseconds
 void CONSOLE_Print( string message );
 void DEBUG_Print( string message );
 void DEBUG_Print( BYTEARRAY b );
+void DEBUG_Print_vec( BYTEARRAY b);
 
 #endif

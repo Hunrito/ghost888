@@ -1,3 +1,7 @@
+!!!
+PTR 1.29 testing! This ghost++ bot will break in atleast one place due to deprecated dll files: (S> game version to old)
+!!!
+
 Background:
 I've made a summary of how to install and getting ghost++ up and running on a raspberry pi debian stretch. I've installed it on Ubuntu 16.04 too, but I didn't keep track of every library I tried then.
 
