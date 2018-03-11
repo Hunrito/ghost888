@@ -2918,10 +2918,10 @@ void CBaseGame :: EventPlayerChangeTeam( CGamePlayer *player, unsigned char team
 	}
 	else
 	{
-		if( team > 12 )
+		if( team > 24 )
 			return;
 
-		if( team == 12 )
+		if( team == 24 )
 		{
 			if( m_Map->GetMapObservers( ) != MAPOBS_ALLOWED && m_Map->GetMapObservers( ) != MAPOBS_REFEREES )
 				return;
@@ -2937,7 +2937,7 @@ void CBaseGame :: EventPlayerChangeTeam( CGamePlayer *player, unsigned char team
 
 			for( unsigned char i = 0; i < m_Slots.size( ); ++i )
 			{
-				if( m_Slots[i].GetSlotStatus( ) == SLOTSTATUS_OCCUPIED && m_Slots[i].GetTeam( ) != 12 && m_Slots[i].GetPID( ) != player->GetPID( ) )
+				if( m_Slots[i].GetSlotStatus( ) == SLOTSTATUS_OCCUPIED && m_Slots[i].GetTeam( ) != 24 && m_Slots[i].GetPID( ) != player->GetPID( ) )
 					++NumOtherPlayers;
 			}
 
@@ -2951,13 +2951,13 @@ void CBaseGame :: EventPlayerChangeTeam( CGamePlayer *player, unsigned char team
 		{
 			m_Slots[SID].SetTeam( team );
 
-			if( team == 12 )
+			if( team == 24 )
 			{
 				// if they're joining the observer team give them the observer colour
 
-				m_Slots[SID].SetColour( 12 );
+				m_Slots[SID].SetColour( 24 );
 			}
-			else if( m_Slots[SID].GetColour( ) == 12 )
+			else if( m_Slots[SID].GetColour( ) == 24 )
 			{
 				// if they're joining a regular team give them an unused colour
 
@@ -2988,7 +2988,7 @@ void CBaseGame :: EventPlayerChangeColour( CGamePlayer *player, unsigned char co
 	{
 		// make sure the player isn't an observer
 
-		if( m_Slots[SID].GetTeam( ) == 12 )
+		if( m_Slots[SID].GetTeam( ) == 24 )
 			return;
 
 		ColourSlot( SID, colour );
