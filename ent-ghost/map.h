@@ -127,7 +127,8 @@ private:
 	bool m_MapLoadInGame;
 	bool m_Tournament;							// config value: whether this is involved with uxtourney system
 	uint32_t m_TournamentFakeSlot;				// config value: if tournament, this is SID for fake player
-	string m_MapData;							// the map data itself, for sending the map to players
+	bool m_TeamsDisabled;
+    string m_MapData;							// the map data itself, for sending the map to players
 	uint32_t m_MapNumPlayers;
 	uint32_t m_MapNumTeams;
 	vector<CGameSlot> m_Slots;
@@ -165,7 +166,8 @@ public:
 	string GetMapLocalPath( )				{ return m_MapLocalPath; }
 	bool GetMapLoadInGame( )				{ return m_MapLoadInGame; }
 	bool GetMapTournament( )				{ return m_Tournament; }
-	uint32_t GetMapTournamentFakeSlot( )	{ return m_TournamentFakeSlot; }
+	bool GetMapTeamsDisabled( )                { return m_TeamsDisabled; }
+    uint32_t GetMapTournamentFakeSlot( )	{ return m_TournamentFakeSlot; }
 	string *GetMapData( )					{ return &m_MapData; }
 	uint32_t GetMapNumPlayers( )			{ return m_MapNumPlayers; }
 	uint32_t GetMapNumTeams( )				{ return m_MapNumTeams; }

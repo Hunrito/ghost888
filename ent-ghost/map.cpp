@@ -606,7 +606,7 @@ void CMap :: Load( CConfig *CFG, string nCFGFile )
 							}
 
 							ISS.read( (char *)&RawMapNumTeams, 4 );		// number of teams
-
+                            
                                                         for( uint32_t i = 0; i < RawMapNumTeams; ++i )
 							{
 								uint32_t Flags;
@@ -615,7 +615,7 @@ void CMap :: Load( CConfig *CFG, string nCFGFile )
 								ISS.read( (char *)&Flags, 4 );			// flags
 								ISS.read( (char *)&PlayerMask, 4 );		// player mask
 
-                                                                for( unsigned char j = 0; j < 12; ++j )
+                                                                for( unsigned char j = 0; j < 24; ++j )
 								{
 									if( PlayerMask & 1 )
 									{
@@ -798,7 +798,8 @@ void CMap :: Load( CConfig *CFG, string nCFGFile )
 	m_MapLoadInGame = CFG->GetInt( "map_loadingame", 0 ) == 0 ? false : true;
 	m_Tournament = CFG->GetInt( "map_tournament", 0 ) == 0 ? false : true;
 	m_TournamentFakeSlot = CFG->GetInt( "map_tournamentfake", 255 );
-	
+    m_TeamsDisabled = CFG->GetInt( "map_teamsdisabled", 0) == 0 ? false : true;
+
 	if( m_Tournament )
 	{
 		for( int i = 0; i <= 12; i++ )
@@ -840,7 +841,7 @@ void CMap :: Load( CConfig *CFG, string nCFGFile )
 
 	if( Slots.empty( ) )
 	{
-        for( uint32_t Slot = 1; Slot <= 12; ++Slot )
+        for( uint32_t Slot = 1; Slot <= 24; ++Slot )
 		{
 			string SlotString = CFG->GetString( "map_slot" + UTIL_ToString( Slot ), string( ) );
 
@@ -856,7 +857,7 @@ void CMap :: Load( CConfig *CFG, string nCFGFile )
 		CONSOLE_Print( "[MAP] overriding slots" );
 		Slots.clear( );
 
-                for( uint32_t Slot = 1; Slot <= 12; ++Slot )
+                for( uint32_t Slot = 1; Slot <= 24; ++Slot )
 		{
 			string SlotString = CFG->GetString( "map_slot" + UTIL_ToString( Slot ), string( ) );
 
@@ -970,19 +971,19 @@ void CMap :: CheckValid( )
 		CONSOLE_Print( "[MAP] invalid map_height detected" );
 	}
 
-	if( m_MapNumPlayers == 0 || m_MapNumPlayers > 12 )
+	if( m_MapNumPlayers == 0 || m_MapNumPlayers > 24 )
 	{
 		m_Valid = false;
 		CONSOLE_Print( "[MAP] invalid map_numplayers detected" );
 	}
 
-	if( m_MapNumTeams == 0 || m_MapNumTeams > 12 )
+	if( m_MapNumTeams == 0 || m_MapNumTeams > 24 )
 	{
 		m_Valid = false;
 		CONSOLE_Print( "[MAP] invalid map_numteams detected" );
 	}
 
-	if( m_Slots.empty( ) || m_Slots.size( ) > 12 )
+	if( m_Slots.empty( ) || m_Slots.size( ) > 24 )
 	{
 		m_Valid = false;
 		CONSOLE_Print( "[MAP] invalid map_slot<x> detected" );

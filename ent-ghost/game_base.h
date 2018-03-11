@@ -145,7 +145,8 @@ protected:
 	uint32_t m_LastReconnectHandleTime;				// last time we tried to handle GProxy reconnects
 	bool m_League;									// whether or not this is a league game
 	bool m_Tournament;								// whether or not this is a uxtourney system game
-	uint32_t m_TournamentMatchID;					// if m_Tournament, this is the tournament match ID
+    bool m_TeamsDisabled;
+    uint32_t m_TournamentMatchID;					// if m_Tournament, this is the tournament match ID
 	uint32_t m_TournamentChatID;					// if m_Tournament, this is the chat id
 	vector<FakePlayer>  m_FakePlayers;				// vector of fake players
 

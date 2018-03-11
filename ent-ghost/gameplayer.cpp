@@ -658,6 +658,7 @@ void CGamePlayer :: ProcessPackets( )
 				
 				if( ChatPlayer )
 				{
+
 					// determine if we should auto-mute this player
 					if( ChatPlayer->GetType( ) == CIncomingChatPlayer :: CTH_MESSAGE || ChatPlayer->GetType( ) == CIncomingChatPlayer :: CTH_MESSAGEEXTRA )
 					{
