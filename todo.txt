@@ -3,14 +3,22 @@ random fix:
 	the threads never get recovered? what happens when a thread gets stuck?
 
 
+rnd_findings:
+    wc3 ver 1.28+ started using absolute path for the map in savedgames. I prevented the savegame mappath vs cfg file mappath check, and it works fine. perhaps check if the relative path is appended on the absolute path is sufficient.
+    
+    there are no replays from games that gets loaded from savefiles. Not even on the wc3 clients. This would pose an issue for important matches.
+        Alt 1:  unpack the replay, append the played actions, repack at end. Could take time to implement.
+        Alt 2:  possibility to reconnect & speed up via lan, like in the waaagh tv replays. this would create 2 separate games that cooperate. Would take longer to implement. Both would complement eachother well.
+
+
 wishlist:
 	print join/leave statistics.
 		"10 individual players has joined this game the last 10 mins"
 	
-    autosave at drops
+		"game probability?" (requires more than 0 games played lol).
 
-	possible to load saved games
-		
-	fromall that doesn't lag. (prioritice threads?)
+	autosave at drops (only if inhouse? or m_Tournament/m_League) not autohosted pubs xD
+
+	fromall that doesn't lag. (prioritize threads?)
 
     	
