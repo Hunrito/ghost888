@@ -3,13 +3,6 @@ random fix:
 	the threads never get recovered? what happens when a thread gets stuck?
 
 
-    läsa rätt revision ur 1.29 Warcraft III.exe
-        Vad gör Storm.dll, war3.exe, game.dll nu? Bara checkrevision??? 
-    
-        Vad säger wireshark på PTR?
-            med wc3
-            med ghost
-
 wishlist:
 	print join/leave statistics.
 		"10 individual players has joined this game the last 10 mins"
