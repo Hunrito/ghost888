@@ -1,7 +1,7 @@
 **Experimental for 1.29.**
 
 24 player support untested. 
-Check commit history if you're looking for how to make your own bot 1.29 compitable.
+Check commit history if you're looking for how to make your own bot 1.29 compatible.
 
 If you want to host on 1.28 or earlier versions, change to branch: ver28_sg
 
@@ -106,3 +106,14 @@ Cronscript example will run testcron.php every 10 mins, which uses cronfunctions
 crontab -e
 */10 * * * * php ~/Downloads/ghost-ent-bt/ent-ghost/testcron.php
 ```
+
+**Licences**
+
+[ent-ghost](https://github.com/uakfdotb/ent-ghost) : GNU GPL v3.
+
+[ghost++](https://github.com/uakfdotb/ghostpp): Apache License, Version 2.0
+
+There are some other notable licences under stormlib, bncsutil etc.
+
+I have included the libraries here in order to make the building easier.
+
