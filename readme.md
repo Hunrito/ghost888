@@ -109,11 +109,8 @@ crontab -e
 
 **Licences**
 
-[ent-ghost](https://github.com/uakfdotb/ent-ghost) : GNU GPL v3.
-
-[ghost++](https://github.com/uakfdotb/ghostpp): Apache License, Version 2.0
-
-There are some other notable licences under stormlib, bncsutil etc.
-
+[ent-ghost](https://github.com/uakfdotb/ent-ghost) : GNU GPL v3.\
+[ghost++](https://github.com/uakfdotb/ghostpp): Apache License, Version 2.0.\
+There are some other notable licences under stormlib, bncsutil etc.\
 I have included the libraries here in order to make the building easier.
 
