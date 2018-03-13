@@ -1,9 +1,13 @@
-Experimental for 1.29 implemented.
+**Experimental for 1.29.**
+24 player support untested. 
+Check commit history if you're looking for how to make your own bot 1.29 compitable.
 
-Background:
-I've made a summary of how to install and getting ghost++ up and running on a raspberry pi debian stretch. I've installed it on Ubuntu 16.04 too, but I didn't keep track of every library I tried then.
+If you want to host on 1.28 or earlier versions, change to branch: ver28_sg
 
-Overview:
+**Background:**
+I've made a summary of how to install and getting ghost++ up and running on a raspberry pi. I've installed it on Ubuntu 16.04 too, but I didn't keep track of every dependency I tried then.
+
+**Overview:**
 1. Installing dependencies and compiling the three main parts.
 2. Configuring mysql/mariadb database
 3. Create a folder with the executable and directories
@@ -11,62 +15,73 @@ Overview:
 5. Test the bot
 6. Cronscript example (to be done)
 
-Installation:
+**Installation:**
 bncsutil specific:
 apt-get install libgmp3-dev
-bncsutil/src/bncsutil/
+cd bncsutil/src/bncsutil/
 make
 make install
 Lots of warnings, but works.
 
-stormlib specific:
+**stormlib specific:**
 apt-get install libbz2-dev
-Stormlib/stormlib/
+cd Stormlib/stormlib/
 make
 make install
 
-ent-ghost:
+**ent-ghost:**
 apt-get install libboost-all-dev
 apt-get install libgeoip-dev
-apt-get install mysql-server mysql-client (may be unneeded, the one below installs mariadb and some compilation stuff)
+apt-get install mysql-server mysql-client
 apt-get install default-libmysqlclient-dev
-ent-ghost/
+cd ent-ghost/
 make
 
-Fix mysql/mariadb to have:
-	a database
-	a user, with grant all privileges on the database
-	get the portnumber by: show variables like "%port%";
+**Fix mysql/mariadb:**
+	create database ghostdb;
+	create user 'username'@'localhost' identified by 'password';
+	grant all privileges on ghostdb.* to 'username'@'localhost';
 
-Configure ghost.cfg and default.cfg
-ghost.cfg has higher priority, and therefore settings made in ghost.cfg doesn't need to be set in default.cfg.
+	show variables like "%port%";  (port for default.cfg later)
 
-Create a folder structure: 
+	Creating all the tables from a sql file:
+	mysql -u username -p ghostdb < install.sql  (in ent-ghost/)
+
+**Create a folder structure:** 
 ~/ghost++/
 	maps/
 		echoisles.w3x
 	mapcfgs/
-		blizzard.j (Can both be extracted from war3x.mpq)
+		blizzard.j (Both .j files be extracted from war3x.mpq/scripts via [ladiks-mpq-editor](https://www.hiveworkshop.com/threads/ladiks-mpq-editor-32bit.249562/)
 		common.j
 		echoisles.cfg
+		wormwar.cfg	(example cfg file)
 	replays/
-	savedgames/
+	savegames/
 	war3.exe (rename the Warcraft III.exe to war3.exe)
-	Storm.dll
-	game.dll
-	ghost++ (executable that was compiled in ent-ghost folder)
+	Storm.dll (unused for 1.29)
+	game.dll  (unused for 1.29)
+	ghost++ (executable that was compiled in ent-ghost/ folder)
+	
 	ghost.cfg
 	default.cfg
-	some more things..
+	language.cfg
+	gameloaded.txt
+	gameover.txt
+	ipblacklist.txt
+	ip-to-country.csv
+	motd.txt
+	
+**Configure ghost.cfg and default.cfg:**
+ghost.cfg has higher priority, and therefore settings made in ghost.cfg doesn't need to be set in default.cfg.
 
-I may create a cp command.
+Test if the bot can login to battle.net. For others to join a game port forwarding needs to be configured.
 
-You can test if the bot can login to battle.net. For others to join the game port forwarding needs to be configured.
+**Cronscript to update the mysql database:**
+This needs php dependencies (yet to be included).
 
 Cronscript example:
 crontab -e
-
 Append the following to run the script,testcron.php, every 10 minutes. It updates bans and statistics.
-example:
-*/10 * * * * php ghostspath/ghost/ent-ghost/testcron.php
+*/10 * * * * php ~/Downloads/ghost-ent-bt/ent-ghost/testcron.php
 
