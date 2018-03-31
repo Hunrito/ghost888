@@ -5,6 +5,7 @@ random fix:
 
 rnd_findings:
     wc3 ver 1.28+ started using absolute path for the map in savedgames. I prevented the savegame mappath vs cfg file mappath check, and it works fine. perhaps check if the relative path is appended on the absolute path is sufficient.
+
     
     there are no replays from games that gets loaded from savefiles. Not even on the wc3 clients. This would pose an issue for important matches.
         Alt 1:  unpack the replay, append the played actions, repack at end. Could take time to implement.
@@ -21,4 +22,5 @@ wishlist:
 
 	fromall that doesn't lag. (prioritize threads?)
 
-	
+	!loadsg which doesn't require !enforcesg
+
