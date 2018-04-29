@@ -304,12 +304,9 @@ bool CBNETProtocol :: RECEIVE_SID_AUTH_INFO( BYTEARRAY data )
 		m_IX86VerFileName = UTIL_ExtractCString( data, 24 );
 		m_ValueStringFormula = UTIL_ExtractCString( data, m_IX86VerFileName.size( ) + 25 );
 	
-        DEBUG_Print("RECEIVE_SID_AUTH_INFO");
-       
-        //DEbug
-        
-        DEBUG_Print_vec(m_IX86VerFileName);
-        DEBUG_Print( m_ValueStringFormula);        
+        //DEBUG_Print("RECEIVE_SID_AUTH_INFO");
+        //DEBUG_Print_vec(m_IX86VerFileName);
+        //DEBUG_Print( m_ValueStringFormula);        
 
         return true;
 	}
